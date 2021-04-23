@@ -18,8 +18,6 @@ const connection = mysql.createConnection({
 //establishing connection to the database
 connection.connect((err) => {
     if (err) throw err;
-
-    //giveOptions();
 })
 
 connection.query = util.promisify(connection.query);

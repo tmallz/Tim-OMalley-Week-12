@@ -17,7 +17,7 @@ const addEmployee = () =>{
             type: 'list',
             name: 'choice',
             message: 'What is the employees role',
-            choices: ['Sales Lead', 'Sales Person', 'Software Engineer', 'Engineering Manager', 'Accountant', 'Accountant Manager', 'Lawyer', 'Legal Team Lead'],
+            choices: ['Sales Lead', 'Salesperson', 'Lead Engineer' ,'Software Engineer', 'Accountant Manager','Accountant', 'Legal Team Lead', 'Lawyer'],
         },
     ])
     .then((data) => {
