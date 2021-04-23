@@ -1,6 +1,8 @@
-//importing mysql and inquirer
+//importing mysql inquirer and dotenv
 const mysql = require('mysql');
 const inquirer = require('inquirer');
+require('dotenv').config();
+
 
 //setting the options array for inquirer
 
@@ -9,13 +11,10 @@ const connection = mysql.createConnection({
 
     // Your port; if not 3306
     port: 3306,
-  
-    // Your username
-    user: 'root',
-  
-    // Be sure to update with your own MySQL password!
-    password: 'myPassword1234',
-    database: 'employeeTrackerDB',
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASSWORD,
+
 });
 
 const giveOptions = () => {
