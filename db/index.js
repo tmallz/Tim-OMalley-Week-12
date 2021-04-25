@@ -11,6 +11,10 @@ class DB {
            'SELECT * FROM employee'
         );
     }
+
+    exit(){
+        return this.connection.end();
+    }
     
 
 }
