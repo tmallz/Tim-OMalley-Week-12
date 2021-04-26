@@ -8,6 +8,27 @@ console.log("My app is running");
 async function viewEmployees() {
     let allEmployees = await db.selectAllEmployees();
     console.table(allEmployees);
+    giveOptions();
+}
+
+function viewEmployeesByDepartment() {
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'choice',
+            message: 'What department would you like to see the employees for?',
+            choices: [
+                'Sales', 
+                'Engineer', 
+                'Finance',
+                'Legal'],
+        }
+        ])
+        .then(async (data) =>{
+            let employeesByDepartment = await db.viewEmployeesByDepartment(data.choice);
+            console.table(employeesByDepartment);
+            giveOptions();
+        });
 }
 
 //async function that handles exiting the database connection 
@@ -34,14 +55,11 @@ const giveOptions = () => {
         }
     ])
     .then((data) =>{
-        
         switch(data.choice){
             case 'View all employees':
-                viewEmployees();
-                return giveOptions();
+               return viewEmployees();
             case 'View employees by department':
-                console.log('View employees by department');
-                return giveOptions();
+                return viewEmployeesByDepartment();
             case 'View employees by manager':
                 console.log('View employees by manager');
                 return giveOptions();
