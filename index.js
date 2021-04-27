@@ -11,11 +11,11 @@ async function viewEmployees() {
     giveOptions();
 }
 
-function viewEmployeesByDepartment() {
+function viewEmployeesByDept() {
     inquirer.prompt([
         {
             type: 'list',
-            name: 'choice',
+            name: 'department',
             message: 'What department would you like to see the employees for?',
             choices: [
                 'Sales', 
@@ -25,10 +25,68 @@ function viewEmployeesByDepartment() {
         }
         ])
         .then(async (data) =>{
-            let employeesByDepartment = await db.viewEmployeesByDepartment(data.choice);
+            let employeesByDepartment = await db.viewEmployeesByDepartment(data.department);
             console.table(employeesByDepartment);
             giveOptions();
         });
+}
+
+function viewEmployeesManager(){
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'manager',
+            message: 'What department would you like to see the employees for?',
+            choices: [
+                'John Doe', 
+                'Ashley Rodrigues', 
+                'Kunal Singh',
+                'Sarah Lourd'],
+        }
+        ])
+        .then(async (data) =>{
+            let employeesByManager = await db.viewEmployeesByDepartment(data.manager);
+            console.log(data.manager);
+            console.table(employeesByManager);
+            giveOptions();
+        });
+}
+
+function addEmployee(){
+    inquirer
+    .prompt([
+        {
+            type: 'input',
+            message: 'What is the employees first name?',
+            name: 'firstName'
+        },
+        {
+            type: 'input',
+            message: 'What is the employees last name?',
+            name: 'lastName'
+        },
+        {
+            type: 'list',
+            name: 'role',
+            message: 'What is the employees role',
+            choices: ['Sales Lead', 'Salesperson', 'Lead Engineer' ,'Software Engineer', 'Accountant Manager','Accountant', 'Legal Team Lead', 'Lawyer'],
+        },
+        {
+            type: 'list',
+            name: 'manager',
+            message: 'What department would you like to see the employees for?',
+            choices: [
+                'John Doe', 
+                'Ashley Rodrigues', 
+                'Kunal Singh',
+                'Sarah Lourd'],
+            }
+    ])
+    .then(async (data) => {
+        let newEmployee = {first_name:data.firstName, last_name:data.lastName, role_id:data.role, manager_id:data.manager};
+        await db.addEmployeeDB(newEmployee);
+        giveOptions();
+    })
 }
 
 //async function that handles exiting the database connection 
@@ -59,13 +117,11 @@ const giveOptions = () => {
             case 'View all employees':
                return viewEmployees();
             case 'View employees by department':
-                return viewEmployeesByDepartment();
+                return viewEmployeesByDept();
             case 'View employees by manager':
-                console.log('View employees by manager');
-                return giveOptions();
+                return viewEmployeesManager();
             case 'Add employee':
-                console.log('Add employee');
-                return giveOptions();;
+                return addEmployee();
             case 'Remove employee':
                 console.log('Remove employee');
                 return giveOptions();

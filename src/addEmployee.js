@@ -23,9 +23,6 @@ const addEmployee = () =>{
     .then((data) => {
         console.log(`${data.firstName} || ${data.lastName} || ${data.choice}`);
     })
-    .catch((err) =>{
-        console.log(`Error: ${err}`)
-    });
 };
 
 module.exports = addEmployee();
