@@ -8,7 +8,7 @@ console.log("My app is running");
 async function viewEmployees() {
     let allEmployees = await db.selectAllEmployees();
     console.table(allEmployees);
-    giveOptions();
+    giveOptions()
 }
 
 function viewEmployeesByDept() {
@@ -89,6 +89,22 @@ function addEmployee(){
     })
 }
 
+async function removeEmployee(){
+    let allEmployees = await employeeList();
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'remove',
+            message: 'What employee would you like to remove?',
+            choices: allEmployees,
+        }
+        ])
+        .then(async (data) =>{
+            await db.removeEmployee(data.remove);
+            giveOptions();
+        })
+}
+
 //async function that handles exiting the database connection 
 async function exitConnection() {
    await db.exit();
@@ -123,8 +139,7 @@ const giveOptions = () => {
             case 'Add employee':
                 return addEmployee();
             case 'Remove employee':
-                console.log('Remove employee');
-                return giveOptions();
+                return removeEmployee();
             case 'Update employee role':
                 console.log('Update employee role');
                 return giveOptions();
@@ -140,8 +155,34 @@ const giveOptions = () => {
     });
 }
 
+//helper functions
+async function mapRoles(){
+    const allRoles = await db.getRoleList();
+    const roleArray = allRoles.map(({id, title, salary, deparment_id}) => ({
+        name: title, 
+        salary: salary,
+        deparment_id: deparment_id,
+        value: id 
+    }));
+    return roleArray;
+}
+
+async function employeeList(){
+    const employees = await db.selectAllEmployees();
+    const emmployeeArray = employees.map(({id, first_name, last_name, role_id, manager_id}) => ({
+        name: [first_name,last_name].join(' '),
+        role_id: role_id,
+        manager_id: manager_id,
+        value: id
+    }));
+    return emmployeeArray
+}
+
+
+//function to start program
 const start = () =>{
     giveOptions();
 }
 
+//intializing the app
 start();

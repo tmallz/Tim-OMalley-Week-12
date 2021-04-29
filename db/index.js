@@ -79,11 +79,26 @@ class DB {
             INSERT INTO employee set ?`, employee)
     }
 
+    async removeEmployee(employee){
+        return this.connection.query(`
+        DELETE FROM employee
+        WHERE id = ${employee}
+        `)
+
+    }
+
     //function that exits the connection to the db
     exit(){
         return this.connection.end();
     }
     
+
+    //helper functions
+    getRoleList(){
+        return this.connection.query(`
+            SELECT * FROM role ORDER BY id ASC
+        `);
+    }
 
 }
 
