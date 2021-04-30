@@ -131,6 +131,28 @@ async function updateRole(){
         })
 }
 
+async function updateManager(){
+    let allEmployees = await employeeList();
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'choice',
+            message: 'What employee would you like to change the manager for?',
+            choices: allEmployees,
+        },
+        {
+            type: 'list',
+            name: 'manager',
+            message: 'Who is their new manager?',
+            choices: allEmployees
+        },
+    ])
+    .then(async (data) => {
+        await db.updateManager(data.choice, data.manager)
+        giveOptions();
+    })
+}
+
 //async function that handles exiting the database connection 
 async function exitConnection() {
    await db.exit();
@@ -150,7 +172,6 @@ const giveOptions = () => {
                 'Remove employee',
                 'Update employee role',
                 'Update employee manager',
-                'View all roles',
                 'exit' ],
         }
     ])
@@ -169,11 +190,7 @@ const giveOptions = () => {
             case 'Update employee role':
                 return updateRole();
             case 'Update employee manager':
-                console.log('Update employee manager');
-                return giveOptions();
-            case 'View all roles':
-                console.log('View all roles');
-                return giveOptions();
+                return updateManager();
             case 'exit':
                 return exitConnection();
         }

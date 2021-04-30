@@ -87,13 +87,23 @@ class DB {
 
     }
 
+    //updates role for employee
     updateRole(employee, role){
         return this.connection.query(`
             UPDATE employee
             SET role_id = ${role}
+            where id = ${employee}
                 and role_id IN 
                 (SELECT id FROM role
                 WHERE id = role_id);
+        `)
+    }
+
+    updateManager(employee, manager){
+        return this.connection.query(`
+            UPDATE employee
+            SET manager_id = ${manager}
+            where id = ${employee}
         `)
     }
 
