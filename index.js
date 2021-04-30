@@ -52,7 +52,9 @@ function viewEmployeesManager(){
         });
 }
 
-function addEmployee(){
+//async function that adds employees
+async function addEmployee(){
+    let roleArray = await mapRoles();
     inquirer
     .prompt([
         {
@@ -69,7 +71,7 @@ function addEmployee(){
             type: 'list',
             name: 'role',
             message: 'What is the employees role',
-            choices: ['Sales Lead', 'Salesperson', 'Lead Engineer' ,'Software Engineer', 'Accountant Manager','Accountant', 'Legal Team Lead', 'Lawyer'],
+            choices: roleArray 
         },
         {
             type: 'list',
@@ -89,6 +91,7 @@ function addEmployee(){
     })
 }
 
+//async function that removes employees
 async function removeEmployee(){
     let allEmployees = await employeeList();
     inquirer.prompt([
@@ -97,10 +100,33 @@ async function removeEmployee(){
             name: 'remove',
             message: 'What employee would you like to remove?',
             choices: allEmployees,
-        }
+        },
         ])
         .then(async (data) =>{
             await db.removeEmployee(data.remove);
+            giveOptions();
+        })
+}
+
+async function updateRole(){
+    let allEmployees = await employeeList();
+    let roleArray = await mapRoles();
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'choice',
+            message: 'What employee would you like to change the role for?',
+            choices: allEmployees,
+        },
+        {
+            type: 'list',
+            name: 'role',
+            message: 'What role would you like to give the employee?',
+            choices: roleArray,
+        },
+        ])
+        .then(async (data) =>{
+            await db.updateRole(data.choice, data.role);
             giveOptions();
         })
 }

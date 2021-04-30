@@ -58,7 +58,6 @@ class DB {
 
     async addEmployeeDB(employee){
         let manNum;
-        let roleNum =1;
         switch(employee.manager_id){
             case 'John Doe':
                 manNum = 1;
@@ -74,9 +73,8 @@ class DB {
                 break;    
         }
         employee.manager_id = manNum;
-        employee.role_id = roleNum;
         return this.connection.query(`
-            INSERT INTO employee set ?`, employee)
+            INSERT INTO employee SET ?`, employee)
     }
 
     async removeEmployee(employee){
