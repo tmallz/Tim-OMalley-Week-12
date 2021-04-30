@@ -167,8 +167,7 @@ const giveOptions = () => {
             case 'Remove employee':
                 return removeEmployee();
             case 'Update employee role':
-                console.log('Update employee role');
-                return giveOptions();
+                return updateRole();
             case 'Update employee manager':
                 console.log('Update employee manager');
                 return giveOptions();

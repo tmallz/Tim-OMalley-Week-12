@@ -56,6 +56,7 @@ class DB {
         `);
     }
 
+    //adds employee
     async addEmployeeDB(employee){
         let manNum;
         switch(employee.manager_id){
@@ -77,12 +78,23 @@ class DB {
             INSERT INTO employee SET ?`, employee)
     }
 
+    //removes employee
     async removeEmployee(employee){
         return this.connection.query(`
         DELETE FROM employee
         WHERE id = ${employee}
         `)
 
+    }
+
+    updateRole(employee, role){
+        return this.connection.query(`
+            UPDATE employee
+            SET role_id = ${role}
+                and role_id IN 
+                (SELECT id FROM role
+                WHERE id = role_id);
+        `)
     }
 
     //function that exits the connection to the db
